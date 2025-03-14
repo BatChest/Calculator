@@ -5,16 +5,39 @@ let operationSymbol;
 const container = document.getElementById('container');
 
 //Create 3x3 grid for calculator
-createGrid(3);
+createGrid();
 
-function createGrid(gridSize) {
+function createGrid() {
   // create grid cells
-  for (let i = 0; i < gridSize; i++) {
-    for (let j = 0; j < gridSize; j++) {
-      const newDiv = document.createElement('div');
-      newDiv.classList.add('gridChild');
-      container.appendChild(newDiv);
-    }
+  const numberLabels = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
+
+  for (let i = 0; i < numberLabels.length; i++) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('gridChild');
+    newDiv.textContent = numberLabels[i];
+    container.appendChild(newDiv);
+  }
+
+  const operationLabels = ['+', '-', '*', '/'];
+
+  for (let i = 0; i < operationLabels.length; i++) {
+    const operationButtons = document.createElement('div');
+    operationButtons.classList.add('gridChild', 'operation');
+    operationButtons.textContent = operationLabels[i];
+    container.appendChild(operationButtons);
+  }
+
+  const equalsButton = document.createElement('div');
+  equalsButton.classList.add('gridChild', 'equals');
+  equalsButton.textContent = '=';
+  container.appendChild(equalsButton);
+
+  const specialOperators = ['0', 'c'];
+  for (let i = 0; i < specialOperators.length; i++) {
+    const specialButtons = document.createElement('div');
+    specialButtons.classList.add('gridChild', 'special');
+    specialButtons.textContent = specialOperators[i];
+    container.appendChild(specialButtons);
   }
 }
 
