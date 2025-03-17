@@ -9,77 +9,58 @@ createGrid();
 
 function createGrid() {
   // create grid cells
-  const numberLabels = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
+  // Use objcets tp define each button
+  const buttons = [
+    { label: '7', type: 'number' },
+    { label: '8', type: 'number' },
+    { label: '9', type: 'number' },
+    { label: '4', type: 'number' },
+    { label: '5', type: 'number' },
+    { label: '6', type: 'number' },
+    { label: '1', type: 'number' },
+    { label: '2', type: 'number' },
+    { label: '3', type: 'number' },
+    { label: '+', type: 'operation' },
+    { label: '-', type: 'operation' },
+    { label: '*', type: 'operation' },
+    { label: '/', type: 'operation' },
+    { label: '=', type: 'equals' },
+    { label: '0', type: 'number' },
+    { label: 'C', type: 'clear' }
+  ];
 
-  for (let i = 0; i < numberLabels.length; i++) {
+  for (let i = 0; i < buttons.length; i++) {
     const button = document.createElement('button');
-    // button.id = 'numButton';
     // Creates a specific ID for each number
-    button.id = `numButton-${numberLabels[i]}`;
-    button.classList.add('gridChild');
-    button.textContent = numberLabels[i];
+    button.id = `btn-${buttons[i].label}`;
+    button.classList.add('gridChild', buttons[i].type);
+    button.textContent = buttons[i].label;
 
-    button.dataset.value = numberLabels[i];
+    button.dataset.value = buttons[i].label;
 
 
     button.addEventListener('click', function () {
       const value = this.dataset.value;
-      console.log(`Number ${value} clicked`);
-      // Calculator logic
-    });
+      // Get the button type
+      const type = this.classList[1];
 
+      // Different behavior based on button type
+      if (type === 'number') {
+        console.log(`Number ${value} clicked`);
+        // Add number logic
+      } else if (type === 'operation') {
+        console.log(`Operation ${value} clicked`);
+        // Add operation logic
+      } else if (type === 'equals') {
+        console.log(`Equals clicked`);
+        // add equals logic
+      } else if (type === 'clear') {
+        console.log(`Clear clicked`);
+        // add clear logic
+      }
+    });
     container.appendChild(button);
   }
-
-  const operationLabels = ['+', '-', '*', '/'];
-
-  for (let i = 0; i < operationLabels.length; i++) {
-    const button = document.createElement('button');
-    button.id = 'operationButton';
-    button.classList.add('gridChild', 'operation');
-    button.textContent = operationLabels[i];
-
-    button.addEventListener('click', function () {
-      alert('Operation Clicked!');
-    });
-
-    container.appendChild(button);
-  }
-
-  // Creates the equals button dynamically
-  const button = document.createElement('button');
-  button.id = 'equalButton';
-  button.classList.add('gridChild', 'equals');
-  button.textContent = '=';
-
-  button.addEventListener('click', function () {
-    alert('Equal Clicked!');
-  });
-
-  container.appendChild(button);
-
-  const zeroButton = document.createElement('button');
-  zeroButton.id = 'zeroButton';
-  zeroButton.classList.add('gridChild', 'equals');
-  zeroButton.textContent = '0';
-
-  zeroButton.addEventListener('click', function () {
-    alert('Zero Clicked!');
-  });
-
-  container.appendChild(zeroButton);
-
-  // Creates the equals button dynamically
-  const buttonClear = document.createElement('button');
-  buttonClear.id = 'clearButton';
-  buttonClear.classList.add('gridChild', 'equals');
-  buttonClear.textContent = 'c';
-
-  buttonClear.addEventListener('click', function () {
-    alert('Clear Clicked!');
-  });
-
-  container.appendChild(buttonClear);
 }
 
 function operate(num1, num2, operationSymbol) {
