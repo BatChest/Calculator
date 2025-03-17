@@ -1,6 +1,8 @@
 let num1;
 let num2;
 let operationSymbol;
+// stores the current display
+let currentDisplay = '';
 
 const container = document.getElementById('container');
 
@@ -47,6 +49,7 @@ function createGrid() {
       // Different behavior based on button type
       if (type === 'number') {
         console.log(`Number ${value} clicked`);
+        displayNumber('display', value);
         // Add number logic
       } else if (type === 'operation') {
         console.log(`Operation ${value} clicked`);
@@ -60,6 +63,17 @@ function createGrid() {
       }
     });
     container.appendChild(button);
+  }
+}
+
+function displayNumber(divId, numberClicked) {
+  const divElement = document.getElementById(divId);
+  if (divElement) {
+    divElement.textContent += numberClicked;
+    // Update the global variable with the new content
+    currentDisplay = divElement.textContent;
+  } else {
+    console.error("Div element with ID '" + divId + "' not found.");
   }
 }
 
