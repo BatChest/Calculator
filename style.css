@@ -17,7 +17,7 @@
 }
 
 .gridChild {
-  background-color: grey;
+  background-color: #3f441f;
   width: calc(100% / 4);
   aspect-ratio: 1/1;
   border: 1px solid white;
@@ -27,15 +27,22 @@
   align-items: center;
   font-size: 24px;
   cursor: pointer;
+  color: white;
 }
 
 .operation {
-  background-color: gray;
+  background-color: #3f441f;
+  color: white;
   display: flex;
 }
 
 .equals {
-  background-color: #4caf50;
+  background-color: #3f441f;
+  color: white;
+}
+
+.clear {
+  color: orangered;
 }
 
 /* Display row */
@@ -48,12 +55,13 @@
 }
 
 .display {
-  background-color: gray;
+  background-color: #241F44;
   width: 100%;
   padding-top: 20%;
   border: 1px solid white;
   box-sizing: border-box;
   margin-bottom: 0;
   font-size: xx-large;
+  color: white;
   /* Remove bottom margin */
 }
