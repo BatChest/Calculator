@@ -1,5 +1,5 @@
-let num1;
-let num2;
+let num1 = 0;
+let num2 = 0;
 let operationSymbol;
 // stores the current display
 let currentDisplay = '';
@@ -50,22 +50,36 @@ function createGrid() {
       if (type === 'number') {
         console.log(`Number ${value} clicked`);
         displayNumber('display', value);
-        // Add number logic
+
       } else if (type === 'operation') {
         console.log(`Operation ${value} clicked`);
-        // Add operation logic
+        // first save current operation to global
+        // Convert string to number
+        num1 = parseFloat(currentDisplay);
+        operationSymbol = value;
+        // clear display to input second number
+        clearDisplay('display');
+
       } else if (type === 'equals') {
         console.log(`Equals clicked`);
-        // add equals logic
+        // equal acts as flag and then calls the operate function
+        // Convert string to number
+        num2 = parseFloat(currentDisplay);
+        const result = operate(num1, num2, operationSymbol);
+        currentDisplay = result.toString();
+        // display the answer to calculator
+        document.getElementById('display').textContent = currentDisplay;
+
       } else if (type === 'clear') {
         console.log(`Clear clicked`);
-        // add clear logic
+        clearDisplay('display');
       }
     });
     container.appendChild(button);
   }
 }
 
+// Simply displays the number that are clicked
 function displayNumber(divId, numberClicked) {
   const divElement = document.getElementById(divId);
   if (divElement) {
@@ -75,6 +89,13 @@ function displayNumber(divId, numberClicked) {
   } else {
     console.error("Div element with ID '" + divId + "' not found.");
   }
+}
+
+// Clear display to nothing
+function clearDisplay(divId) {
+  const element = document.getElementById(divId);
+  element.textContent = ''
+  currentDisplay = '';
 }
 
 function operate(num1, num2, operationSymbol) {
