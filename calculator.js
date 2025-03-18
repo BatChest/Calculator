@@ -1,18 +1,23 @@
-let num1 = 0;
-let num2 = 0;
+let num1;
+let num2;
 let operationSymbol;
-// stores the current display
 let currentDisplay = '';
+let expectingSecondNumber = false;
+let shouldClearDisplay = false;
 
 const container = document.getElementById('container');
 
-//Create 3x3 grid for calculator
+// call to create the calculator
 createGrid();
 
 function createGrid() {
   // create grid cells
-  // Use objcets tp define each button
+  // Use objcets to define each button
   const buttons = [
+    { label: '+', type: 'operation' },
+    { label: '-', type: 'operation' },
+    { label: '*', type: 'operation' },
+    { label: '/', type: 'operation' },
     { label: '7', type: 'number' },
     { label: '8', type: 'number' },
     { label: '9', type: 'number' },
@@ -22,15 +27,13 @@ function createGrid() {
     { label: '1', type: 'number' },
     { label: '2', type: 'number' },
     { label: '3', type: 'number' },
-    { label: '+', type: 'operation' },
-    { label: '-', type: 'operation' },
-    { label: '*', type: 'operation' },
-    { label: '/', type: 'operation' },
-    { label: '=', type: 'equals' },
     { label: '0', type: 'number' },
-    { label: 'C', type: 'clear' }
+    { label: 'C', type: 'clear' },
+    { label: '.', type: 'dot' },
+    { label: '=', type: 'equals' }
   ];
 
+  // creates and displays each button
   for (let i = 0; i < buttons.length; i++) {
     const button = document.createElement('button');
     // Creates a specific ID for each number
@@ -40,26 +43,45 @@ function createGrid() {
 
     button.dataset.value = buttons[i].label;
 
-
+    // Here is the main logic for the buttons
     button.addEventListener('click', function () {
-      const value = this.dataset.value;
       // Get the button type
+      const value = this.dataset.value;
       const type = this.classList[1];
 
-      // Different behavior based on button type
+      // number check if we're inputting first,second number or post-result phase
       if (type === 'number') {
         console.log(`Number ${value} clicked`);
+
+        // Clear display if we're in a "post-result" state
+        if (shouldClearDisplay) {
+          clearDisplay('display');
+          shouldClearDisplay = false;
+        }
+
+        // Handle second number input (clear on first digit)
+        if (expectingSecondNumber) {
+          clearDisplay('display');
+          expectingSecondNumber = false;
+        }
+
         displayNumber('display', value);
 
+        // equal checks if we're ready for the second number for operation
       } else if (type === 'operation') {
         console.log(`Operation ${value} clicked`);
         // first save current operation to global
         // Convert string to number
         num1 = parseFloat(currentDisplay);
         operationSymbol = value;
-        // clear display to input second number
-        clearDisplay('display');
 
+        // Prepare for second number
+        expectingSecondNumber = true;
+
+        // Allow continued operations
+        shouldClearDisplay = false;
+
+        // Equal tells us we're ready to operate on our two numbers
       } else if (type === 'equals') {
         console.log(`Equals clicked`);
         // equal acts as flag and then calls the operate function
@@ -67,12 +89,37 @@ function createGrid() {
         num2 = parseFloat(currentDisplay);
         const result = operate(num1, num2, operationSymbol);
         currentDisplay = result.toString();
+
         // display the answer to calculator
         document.getElementById('display').textContent = currentDisplay;
 
+        // Reset num1 and operationSymbol for subsequent calculations
+        num1 = '';
+        operationSymbol = '';
+        expectingSecondNumber = false;
+        shouldClearDisplay = true;
+
+        // reset every global var and display
       } else if (type === 'clear') {
         console.log(`Clear clicked`);
-        clearDisplay('display');
+        clearEverything('display');
+        expectingSecondNumber = false;
+        shouldClearDisplay = false;
+
+        // uses same logic as number buttons by checking if we already have a decimal in our current number
+      } else if (type === 'dot') {
+        // Handle decimal points
+        if (shouldClearDisplay) {
+          clearDisplay('display');
+          shouldClearDisplay = false;
+        }
+        if (expectingSecondNumber) {
+          clearDisplay('display');
+          expectingSecondNumber = false;
+        }
+        if (!currentDisplay.includes('.')) {
+          displayNumber('display', value);
+        }
       }
     });
     container.appendChild(button);
@@ -91,13 +138,24 @@ function displayNumber(divId, numberClicked) {
   }
 }
 
-// Clear display to nothing
+// Only clears the display
 function clearDisplay(divId) {
   const element = document.getElementById(divId);
   element.textContent = ''
   currentDisplay = '';
 }
 
+// Clears display and all global functions
+function clearEverything(divId) {
+  const element = document.getElementById(divId);
+  element.textContent = ''
+  currentDisplay = '';
+  num1 = '';
+  num2 = '';
+  operationSymbol = '';
+}
+
+// matches operation symbol with its actual operation
 function operate(num1, num2, operationSymbol) {
   switch (operationSymbol) {
     case '+':
@@ -113,27 +171,43 @@ function operate(num1, num2, operationSymbol) {
   }
 }
 
-
+// The operation functions
 function add(num1, num2) {
   console.log(num1 + num2);
-  return num1 + num2;
+  answer = num1 + num2
+  if (answer % 1 != 0) {
+    return answer.toFixed(6);
+  }
+  return answer;
 }
 
 function subtract(num1, num2) {
   console.log(num1 - num2);
-  return num1 - num2;
+  answer = num1 - num2
+  if (answer % 1 != 0) {
+    return answer.toFixed(6);
+  }
+  return answer;
 }
 
 function multiply(num1, num2) {
   console.log(num1 * num2);
-  return num1 * num2;
+  answer = num1 * num2
+  if (answer % 1 != 0) {
+    return answer.toFixed(6)
+  }
+  return answer;
 }
 
 function divide(num1, num2) {
   if (num2 === 0) {
     console.log("Error: Cannot divide by zero");
-    return "Error: Cannot divide by zero";
+    return "Error";
   }
   console.log(num1 / num2);
-  return num1 / num2;
+  answer = num1 / num2
+  if (answer % 1 != 0) {
+    return answer.toFixed(6);
+  }
+  return answer;
 }
