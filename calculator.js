@@ -51,8 +51,6 @@ function createGrid() {
 
       // number check if we're inputting first,second number or post-result phase
       if (type === 'number') {
-        console.log(`Number ${value} clicked`);
-
         // Clear display if we're in a "post-result" state
         if (shouldClearDisplay) {
           clearDisplay('display');
@@ -69,7 +67,6 @@ function createGrid() {
 
         // equal checks if we're ready for the second number for operation
       } else if (type === 'operation') {
-        console.log(`Operation ${value} clicked`);
         // first save current operation to global
         // Convert string to number
         num1 = parseFloat(currentDisplay);
@@ -83,7 +80,6 @@ function createGrid() {
 
         // Equal tells us we're ready to operate on our two numbers
       } else if (type === 'equals') {
-        console.log(`Equals clicked`);
         // equal acts as flag and then calls the operate function
         // Convert string to number
         num2 = parseFloat(currentDisplay);
@@ -101,7 +97,6 @@ function createGrid() {
 
         // reset every global var and display
       } else if (type === 'clear') {
-        console.log(`Clear clicked`);
         clearEverything('display');
         expectingSecondNumber = false;
         shouldClearDisplay = false;
@@ -173,7 +168,6 @@ function operate(num1, num2, operationSymbol) {
 
 // The operation functions
 function add(num1, num2) {
-  console.log(num1 + num2);
   answer = num1 + num2
   if (answer % 1 != 0) {
     return answer.toFixed(6);
@@ -182,7 +176,6 @@ function add(num1, num2) {
 }
 
 function subtract(num1, num2) {
-  console.log(num1 - num2);
   answer = num1 - num2
   if (answer % 1 != 0) {
     return answer.toFixed(6);
@@ -191,7 +184,6 @@ function subtract(num1, num2) {
 }
 
 function multiply(num1, num2) {
-  console.log(num1 * num2);
   answer = num1 * num2
   if (answer % 1 != 0) {
     return answer.toFixed(6)
@@ -204,7 +196,6 @@ function divide(num1, num2) {
     console.log("Error: Cannot divide by zero");
     return "Error";
   }
-  console.log(num1 / num2);
   answer = num1 / num2
   if (answer % 1 != 0) {
     return answer.toFixed(6);
